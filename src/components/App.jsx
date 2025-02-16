@@ -37,10 +37,9 @@ function App() {
     );
   };
 
-  const onFilter = (value) => setFilter(value.toLowerCase());
-
+  const filterName = filter.toLowerCase();
   const filteredContacts = filter
-    ? contacts.filter(({ name }) => name.toLowerCase().includes(filter))
+    ? contacts.filter(({ name }) => name.toLowerCase().includes(filterName))
     : contacts;
 
   return (
@@ -51,7 +50,7 @@ function App() {
           <ContactForm handleSubmit={addContact} />
         </div>
         <div className={css["column-right"]}>
-          <SearchBox value={filter} onFilter={onFilter} />
+          <SearchBox value={filter} onFilter={setFilter} />
           <ContactList contacts={filteredContacts} onDelete={deleteContact} />
         </div>
       </div>
