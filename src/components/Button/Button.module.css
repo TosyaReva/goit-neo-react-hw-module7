@@ -1,0 +1,38 @@
+.btn {
+  display: inline-block;
+  padding: 10px 0;
+  border: 1px solid transparent;
+  border-radius: 0;
+  text-align: center;
+  width: 165px;
+  font-size: 15px;
+  /* margin: 5px; */
+  transition-duration: var(--tr-duration);
+  transition-property: background-color, border, color;
+  cursor: pointer;
+}
+
+.btn-red {
+  composes: btn;
+
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.btn-red:hover {
+  background-color: transparent;
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.btn-white {
+  composes: btn;
+  background-color: var(--white);
+  color: #252525;
+}
+
+.btn-white:hover {
+  background-color: transparent;
+  border-color: var(--white);
+  color: var(--white);
+}
