@@ -1,40 +1,35 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import css from "./App.module.css";
 import ContactForm from "./ContactForm/ContactForm";
 import ContactList from "./ContactList/ContactList";
-import { nanoid } from "nanoid";
 import SearchBox from "./SearchBox/SearchBox";
-
-const defaultContacts = [
-  { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-  { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-  { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-  { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-];
+import { useSelector } from "react-redux";
+import { getContacts, getFilter } from "../redux/selectors";
+import { useDispatch } from "react-redux";
+import { addContact, deleteContact, setFilter } from "../redux/actions";
 
 const CONTACT_KEY = "contactBook";
 
 function App() {
-  const [contacts, setContacts] = useState(() => {
-    const localData = localStorage.getItem(CONTACT_KEY);
-    if (localData) return JSON.parse(localData);
-    else return defaultContacts;
-  });
-  const [filter, setFilter] = useState("");
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     localStorage.setItem(CONTACT_KEY, JSON.stringify(contacts));
   }, [contacts]);
 
-  const addContact = ({ name, number }) => {
-    const id = nanoid();
-    setContacts((prevState) => [...prevState, { id, name, number }]);
+  const handleForm = (contact) => {
+    dispatch(addContact(contact));
   };
 
-  const deleteContact = (id) => {
-    setContacts((prevState) =>
-      prevState.filter((contact) => contact.id !== id)
-    );
+  const handleDelete = (id) => {
+    dispatch(deleteContact(id));
+    // );
+  };
+
+  const handleFIlter = (value) => {
+    dispatch(setFilter(value));
   };
 
   const filterName = filter.toLowerCase();
@@ -47,11 +42,11 @@ function App() {
       <h1 className={css.title}>Phonebook</h1>
       <div className={css.container}>
         <div className={css["column-left"]}>
-          <ContactForm handleSubmit={addContact} />
+          <ContactForm handleSubmit={handleForm} />
         </div>
         <div className={css["column-right"]}>
-          <SearchBox value={filter} onFilter={setFilter} />
-          <ContactList contacts={filteredContacts} onDelete={deleteContact} />
+          <SearchBox value={filter} onFilter={handleFIlter} />
+          <ContactList contacts={filteredContacts} onDelete={handleDelete} />
         </div>
       </div>
     </>
@@ -59,10 +54,3 @@ function App() {
 }
 
 export default App;
-
-const defaultData = [
-  { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-  { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-  { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-  { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-];
