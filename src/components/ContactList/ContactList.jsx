@@ -22,12 +22,6 @@ export default function ContactList() {
       : contacts;
   }, [filter, contacts]);
 
-  console.log(
-    filteredContacts,
-    typeof filteredContacts,
-    filteredContacts.length
-  );
-
   return (
     <ul className={css["contact-list"]}>
       {filteredContacts.map((contact) => (
