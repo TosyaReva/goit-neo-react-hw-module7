@@ -4,6 +4,9 @@ import * as Yup from "yup";
 import Button from "../Button/Button";
 import css from "./ContactForm.module.css";
 
+import { useDispatch } from "react-redux";
+import { addContact } from "../../redux/contactsSlice";
+
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string().min(3, "To short").max(50, "To Long").required("Required"),
   number: Yup.string()
@@ -13,16 +16,22 @@ const FeedbackSchema = Yup.object().shape({
     .required("Required"),
 });
 
-export default function ContactForm({ handleSubmit }) {
+export default function ContactForm() {
   const nameFieldId = useId();
   const numberFieldId = useId();
+
+  const dispatch = useDispatch();
+
+  const handleForm = (contact) => {
+    dispatch(addContact(contact));
+  };
 
   return (
     <Formik
       initialValues={{ name: "", number: "" }}
       validationSchema={FeedbackSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        handleSubmit(values);
+        handleForm(values);
         setSubmitting(false);
         resetForm();
       }}
